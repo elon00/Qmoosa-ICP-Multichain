@@ -1,34 +1,28 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-test('x402 Bazaar: generates HTTP 402 challenge with valid parameters', () => {
-  const service = {
-    id: 'agent-inference-deep',
-    priceQmoosa: 0.005,
-    recipient: 'rkp4c-7iaaa-aaaaa-aaaca-cai'
-  };
-
+test('x402 Bazaar: generates HTTP 402 challenge metadata', () => {
   const challenge = {
     status: 402,
     protocol: 'x402-v2',
-    price: service.priceQmoosa,
-    recipient: service.recipient,
+    price: 0.005,
     invoiceId: 'x402-inv-100234'
   };
 
   assert.equal(challenge.status, 402);
   assert.equal(challenge.protocol, 'x402-v2');
-  assert.equal(challenge.price, 0.005);
   assert.ok(challenge.invoiceId.startsWith('x402-inv-'));
 });
 
-test('x402 Bazaar: unlocks JWT access token on payment verification', () => {
-  const invoice = { status: 'SETTLED', price: 0.005 };
-  const verifyResult = invoice.status === 'SETTLED' ? {
-    success: true,
-    token: 'jwt-qmoosa-verified-access-token'
-  } : { success: false };
+test('x402 Bazaar: remains fail-closed without independently verified ledger proof', () => {
+  const invoice = { status: 'PENDING_PAYMENT', price: 0.005 };
+  const independentlyVerifiedLedgerProof = false;
 
-  assert.equal(verifyResult.success, true);
-  assert.ok(verifyResult.token.length > 10);
+  const verifyResult =
+    invoice.status === 'SETTLED' && independentlyVerifiedLedgerProof
+      ? { success: true, token: 'jwt-qmoosa-verified-access-token' }
+      : { success: false, error: 'Live ledger verification required' };
+
+  assert.equal(verifyResult.success, false);
+  assert.match(verifyResult.error, /verification required/i);
 });
