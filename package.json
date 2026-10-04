@@ -13,7 +13,10 @@
     "deploy:mainnet": "bash scripts/deploy-mainnet.sh",
     "mission": "bash scripts/qmoosa-mission.sh",
     "mission:ps1": "powershell -ExecutionPolicy Bypass -File scripts/qmoosa-mission.ps1",
-    "skills:check": "npx skills check"
+    "skills:check": "npx skills check",
+    "mission:finisher": "node scripts/mission-finisher.js --mode baseline",
+    "mission:finisher:testnet": "node scripts/mission-finisher.js --mode testnet",
+    "mission:finisher:mainnet": "node scripts/mission-finisher.js --mode mainnet"
   },
   "keywords": [
     "icp",
