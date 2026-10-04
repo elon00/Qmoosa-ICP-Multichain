@@ -1,0 +1,30 @@
+name: Qmoosa Security & Quantum Audit
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * 0' # Weekly scan
+
+jobs:
+  quantum-security-scan:
+    name: Post-Quantum & Secrets Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Verify NIST FIPS 204 Lattice Parameters
+        run: node scripts/pqc-manifest-signer.js
+
+      - name: Scan for Secret Leaks
+        run: |
+          echo "Scanning for raw private keys or seed phrases..."
+          ! grep -rn "PRIVATE KEY" canisters/ frontend/src/ agents/ || (echo "Leaked key detected!" && exit 1)
+          echo "No exposed private keys found."

@@ -1,0 +1,41 @@
+name: Qmoosa ICP CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install frontend dependencies
+        run: npm --prefix frontend ci
+      - name: Unit tests
+        run: npm test
+      - name: Frontend build
+        run: npm run build
+      - name: Setup dfx
+        uses: dfinity/setup-dfx@main
+        with:
+          dfx-version: "0.24.0"
+      - name: Compile Motoko canisters
+        shell: bash
+        run: |
+          dfx identity new ci --storage-mode plaintext --force >/dev/null 2>&1 || true
+          dfx identity use ci >/dev/null 2>&1 || true
+          dfx start --background --clean
+          dfx canister create --all
+          dfx build
+          dfx stop
+      - name: x402 simulation checks
+        run: node scripts/simulate-x402.js
+      - name: PQC manifest checks
+        run: node scripts/pqc-manifest-signer.js

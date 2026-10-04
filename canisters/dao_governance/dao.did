@@ -1,0 +1,69 @@
+type ProposalType = variant {
+    TokenMint : record { recipient : text; amount : nat };
+    TreasuryDisbursement : record { recipient : text; amount : nat; purpose : text };
+    ProtocolUpgrade : record { canister_id : text; wasm_hash : text };
+    LaunchpadPolicy : record { min_allocation : nat; fee_pct : nat };
+    AgentToolAuth : record { agent_name : text; tool_name : text; authorized : bool };
+};
+
+type ProposalStatus = variant {
+    Active;
+    Passed;
+    Rejected;
+    Executed;
+};
+
+type Proposal = record {
+    id : nat;
+    proposer : text;
+    title : text;
+    description : text;
+    proposal_type : ProposalType;
+    yes_votes : nat;
+    no_votes : nat;
+    quorum : nat;
+    created_at : nat64;
+    voting_deadline : nat64;
+    timelock_until : nat64;
+    status : ProposalStatus;
+};
+
+type Neuron = record {
+    neuron_id : nat;
+    owner : text;
+    staked_amount : nat;
+    dissolve_delay_seconds : nat64;
+    voting_power : nat;
+    created_at : nat64;
+    is_dissolving : bool;
+};
+
+service : {
+    stake_neuron : (amount : nat, dissolve_delay_seconds : nat64) -> (variant { Ok : Neuron; Err : text });
+    get_neuron : (neuron_id : nat) -> (opt Neuron) query;
+    get_my_neurons : (owner : text) -> (vec Neuron) query;
+    
+    submit_proposal : (record {
+        title : text;
+        description : text;
+        proposal_type : ProposalType;
+    }) -> (variant { Ok : nat; Err : text });
+
+    vote : (record {
+        proposal_id : nat;
+        neuron_id : nat;
+        approve : bool;
+    }) -> (variant { Ok : text; Err : text });
+
+    execute_proposal : (proposal_id : nat) -> (variant { Ok : text; Err : text });
+
+    get_proposals : () -> (vec Proposal) query;
+    get_proposal : (proposal_id : nat) -> (opt Proposal) query;
+    get_dao_stats : () -> (record {
+        total_staked : nat;
+        total_voting_power : nat;
+        total_proposals : nat;
+        treasury_balance : nat;
+        active_neurons_count : nat;
+    }) query;
+}

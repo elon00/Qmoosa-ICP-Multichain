@@ -1,0 +1,25 @@
+type Cell = record {
+    x : nat;
+    y : nat;
+    alive : bool;
+    agent_id : nat;
+    energy : nat;
+};
+
+type SimulationState = record {
+    generation : nat;
+    grid_size : nat;
+    alive_count : nat;
+    population_entropy : nat;
+    top_agent_fitness : nat;
+    active_rule : text;
+};
+
+service : {
+    get_state : () -> (SimulationState) query;
+    get_live_cells : () -> (vec record { x : nat; y : nat; energy : nat }) query;
+    
+    step_simulation : (steps : nat) -> (SimulationState);
+    seed_grid : (pattern_type : text) -> (SimulationState);
+    toggle_cell : (x : nat, y : nat) -> (bool);
+}

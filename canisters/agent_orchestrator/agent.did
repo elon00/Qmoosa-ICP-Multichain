@@ -1,0 +1,48 @@
+type AgentRole = variant {
+    Research;
+    Blockchain;
+    Tokenomics;
+    Marketing;
+    Security;
+    Deployment;
+    Automation;
+};
+
+type ActionLog = record {
+    log_id : nat;
+    timestamp : nat64;
+    agent : text;
+    action_type : text;
+    details : text;
+    requires_approval : bool;
+    approved_by : opt text;
+};
+
+type ModelRoute = record {
+    model_id : text;
+    provider : text;
+    latency_ms : nat;
+    cost_per_token : nat;
+    is_active : bool;
+};
+
+service : {
+    get_models : () -> (vec ModelRoute) query;
+    get_action_logs : () -> (vec ActionLog) query;
+
+    dispatch_agent_action : (record {
+        agent : text;
+        action_type : text;
+        details : text;
+        requires_approval : bool;
+    }) -> (variant { Ok : nat; Err : text });
+
+    approve_action : (log_id : nat) -> (variant { Ok : text; Err : text });
+    
+    get_orchestrator_stats : () -> (record {
+        total_actions_logged : nat;
+        pending_approvals : nat;
+        active_agents_count : nat;
+        active_models_count : nat;
+    }) query;
+}

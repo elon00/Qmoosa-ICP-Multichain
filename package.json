@@ -1,0 +1,32 @@
+{
+  "name": "qmoosa-icp-multichain",
+  "version": "1.0.0",
+  "description": "Autonomous Cross-Chain Web3 + AI Protocol bridging ICP Chain Fusion, EVM, Solana, and Polkadot with x402 Micropayments & Post-Quantum Cryptography",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "test": "node --test tests/*.test.js",
+    "test:pocketic": "node tests/pocketic_mock.js",
+    "deploy:local": "bash scripts/deploy-local.sh",
+    "deploy:mainnet": "bash scripts/deploy-mainnet.sh",
+    "mission": "bash scripts/qmoosa-mission.sh",
+    "mission:ps1": "powershell -ExecutionPolicy Bypass -File scripts/qmoosa-mission.ps1",
+    "skills:check": "npx skills check"
+  },
+  "keywords": [
+    "icp",
+    "internet-computer",
+    "icrc-1",
+    "sns-dao",
+    "x402",
+    "conway-automaton",
+    "pqc",
+    "post-quantum",
+    "ai-agents",
+    "web4"
+  ],
+  "author": "Qmoosa ICP Core Team",
+  "license": "Apache-2.0"
+}

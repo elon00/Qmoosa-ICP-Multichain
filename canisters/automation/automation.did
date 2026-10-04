@@ -1,0 +1,37 @@
+type ScheduledJob = record {
+    job_id : nat;
+    name : text;
+    interval_seconds : nat64;
+    target_action : text;
+    is_active : bool;
+    last_triggered_at : nat64;
+    execution_count : nat;
+};
+
+type TriggerLog = record {
+    job_id : nat;
+    timestamp : nat64;
+    status : text;
+    details : text;
+};
+
+service : {
+    get_jobs : () -> (vec ScheduledJob) query;
+    get_logs : () -> (vec TriggerLog) query;
+
+    schedule_job : (record {
+        name : text;
+        interval_seconds : nat64;
+        target_action : text;
+    }) -> (variant { Ok : ScheduledJob; Err : text });
+
+    toggle_job : (job_id : nat) -> (variant { Ok : bool; Err : text });
+    trigger_now : (job_id : nat) -> (variant { Ok : text; Err : text });
+
+    get_automation_stats : () -> (record {
+        total_jobs : nat;
+        active_jobs : nat;
+        total_triggers : nat;
+        timer_subsystem_health : text;
+    }) query;
+}

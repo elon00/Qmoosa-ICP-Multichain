@@ -1,0 +1,23 @@
+# ICP / DFX
+.dfx/
+canister_ids.json
+.env
+
+# Dependencies & Build
+node_modules/
+dist/
+build/
+coverage/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+*.tmp
+
+# PQC Keys (never commit private keys)
+*.priv.pem
+*private_key*
+*.key

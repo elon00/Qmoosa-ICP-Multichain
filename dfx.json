@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "dfx": "0.24.0",
+  "canisters": {
+    "token": {
+      "main": "canisters/token/main.mo",
+      "type": "motoko"
+    },
+    "dao_governance": {
+      "main": "canisters/dao_governance/main.mo",
+      "type": "motoko"
+    },
+    "launchpad": {
+      "main": "canisters/launchpad/main.mo",
+      "type": "motoko"
+    },
+    "x402_gateway": {
+      "main": "canisters/x402_gateway/main.mo",
+      "type": "motoko"
+    },
+    "agent_orchestrator": {
+      "main": "canisters/agent_orchestrator/main.mo",
+      "type": "motoko"
+    },
+    "conway_engine": {
+      "main": "canisters/conway_engine/main.mo",
+      "type": "motoko"
+    },
+    "automation": {
+      "main": "canisters/automation/main.mo",
+      "type": "motoko"
+    },
+    "pqc": {
+      "main": "canisters/pqc/main.mo",
+      "type": "motoko"
+    },
+    "frontend": {
+      "dependencies": [
+        "token",
+        "dao_governance",
+        "launchpad",
+        "x402_gateway",
+        "agent_orchestrator",
+        "conway_engine",
+        "automation",
+        "pqc"
+      ],
+      "source": [
+        "frontend/dist"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env"
+}

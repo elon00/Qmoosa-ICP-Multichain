@@ -1,0 +1,44 @@
+type ServiceInfo = record {
+    service_id : text;
+    name : text;
+    description : text;
+    price_qmoosa : nat;
+    endpoint : text;
+    provider : text;
+    category : text;
+};
+
+type PaymentInvoice = record {
+    invoice_id : text;
+    service_id : text;
+    price : nat;
+    recipient : text;
+    expires_at : nat64;
+    status : text;
+    payment_header : text;
+};
+
+type VerificationResult = variant {
+    Success : record { access_token : text; message : text };
+    Failed : text;
+};
+
+service : {
+    get_services : () -> (vec ServiceInfo) query;
+    get_service : (service_id : text) -> (opt ServiceInfo) query;
+    
+    request_invoice : (service_id : text) -> (variant {
+        PaymentRequired : PaymentInvoice;
+        Err : text;
+    });
+
+    verify_payment : (invoice_id : text, tx_id : nat) -> (VerificationResult);
+    
+    register_service : (ServiceInfo) -> (variant { Ok : text; Err : text });
+    get_gateway_stats : () -> (record {
+        total_services : nat;
+        total_invoices_issued : nat;
+        total_micropayments_settled : nat;
+        total_volume_qmoosa : nat;
+    }) query;
+}

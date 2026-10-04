@@ -1,0 +1,42 @@
+type PqcAlgorithm = variant {
+    ML_DSA_44;
+    ML_DSA_65;
+    ML_DSA_87;
+    ML_KEM_768;
+    ML_KEM_1024;
+};
+
+type PqcManifest = record {
+    manifest_id : text;
+    name : text;
+    sha256_hash : text;
+    algorithm : PqcAlgorithm;
+    public_key_hex : text;
+    signature_hex : text;
+    signed_by : text;
+    timestamp : nat64;
+    is_verified : bool;
+};
+
+service : {
+    register_manifest : (record {
+        manifest_id : text;
+        name : text;
+        sha256_hash : text;
+        algorithm : PqcAlgorithm;
+        public_key_hex : text;
+        signature_hex : text;
+        signed_by : text;
+    }) -> (variant { Ok : PqcManifest; Err : text });
+
+    verify_signature : (manifest_id : text) -> (variant { Ok : bool; Err : text });
+    get_manifests : () -> (vec PqcManifest) query;
+    get_manifest : (manifest_id : text) -> (opt PqcManifest) query;
+
+    get_pqc_security_report : () -> (record {
+        total_pqc_manifests : nat;
+        verified_manifests : nat;
+        supported_standards : vec text;
+        quantum_resistance_status : text;
+    }) query;
+}

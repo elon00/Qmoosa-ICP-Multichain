@@ -1,0 +1,72 @@
+type Account = record {
+    owner : principal;
+    subaccount : opt blob;
+};
+
+type TransferArgs = record {
+    from_subaccount : opt blob;
+    to : Account;
+    amount : nat;
+    fee : opt nat;
+    memo : opt blob;
+    created_at_time : opt nat64;
+};
+
+type ApproveArgs = record {
+    from_subaccount : opt blob;
+    spender : Account;
+    amount : nat;
+    expected_allowance : opt nat;
+    expires_at : opt nat64;
+    fee : opt nat;
+    memo : opt blob;
+    created_at_time : opt nat64;
+};
+
+type TransferResult = variant {
+    Ok : nat;
+    Err : text;
+};
+
+type ApproveResult = variant {
+    Ok : nat;
+    Err : text;
+};
+
+type Transaction = record {
+    id : nat;
+    timestamp : nat64;
+    tx_type : text;
+    from : text;
+    to : text;
+    amount : nat;
+    fee : nat;
+};
+
+service : {
+    icrc1_name : () -> (text) query;
+    icrc1_symbol : () -> (text) query;
+    icrc1_decimals : () -> (nat8) query;
+    icrc1_fee : () -> (nat) query;
+    icrc1_total_supply : () -> (nat) query;
+    icrc1_balance_of : (Account) -> (nat) query;
+    icrc1_transfer : (TransferArgs) -> (TransferResult);
+    
+    icrc2_approve : (ApproveArgs) -> (ApproveResult);
+    icrc2_allowance : (record { account : Account; spender : Account }) -> (record { allowance : nat; expires_at : opt nat64 }) query;
+
+    dao_mint : (record { to : Account; amount : nat; proposal_id : nat }) -> (TransferResult);
+    burn : (record { amount : nat; memo : opt text }) -> (TransferResult);
+    
+    get_transactions : (nat, nat) -> (vec Transaction) query;
+    get_token_metadata : () -> (record {
+        name : text;
+        symbol : text;
+        decimals : nat8;
+        fee : nat;
+        total_supply : nat;
+        dao_controller : text;
+        supply_model : text;
+    }) query;
+    set_dao_controller : (principal) -> (variant { Ok; Err : text });
+}

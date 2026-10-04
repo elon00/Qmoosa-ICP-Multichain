@@ -1,0 +1,49 @@
+type TokenModel = variant {
+    Fixed;
+    Mintable;
+    GovernanceControlled;
+    Deflationary;
+};
+
+type VestingSchedule = record {
+    total_amount : nat;
+    cliff_days : nat64;
+    duration_days : nat64;
+    released_amount : nat;
+    start_timestamp : nat64;
+};
+
+type LaunchpadToken = record {
+    token_id : nat;
+    name : text;
+    symbol : text;
+    decimals : nat8;
+    initial_supply : nat;
+    model : TokenModel;
+    creator : text;
+    canister_id : text;
+    vesting : opt VestingSchedule;
+    created_at : nat64;
+    status : text;
+};
+
+service : {
+    create_token : (record {
+        name : text;
+        symbol : text;
+        decimals : nat8;
+        initial_supply : nat;
+        model : TokenModel;
+        has_vesting : bool;
+        cliff_days : nat64;
+        duration_days : nat64;
+    }) -> (variant { Ok : LaunchpadToken; Err : text });
+
+    get_all_tokens : () -> (vec LaunchpadToken) query;
+    get_token : (token_id : nat) -> (opt LaunchpadToken) query;
+    get_launchpad_stats : () -> (record {
+        total_tokens_launched : nat;
+        total_capital_raised : nat;
+        active_vesting_contracts : nat;
+    }) query;
+}
