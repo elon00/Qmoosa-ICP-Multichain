@@ -16,7 +16,9 @@
     "skills:check": "npx skills check",
     "mission:finisher": "node scripts/mission-finisher.js --mode baseline",
     "mission:finisher:testnet": "node scripts/mission-finisher.js --mode testnet",
-    "mission:finisher:mainnet": "node scripts/mission-finisher.js --mode mainnet"
+    "mission:finisher:mainnet": "node scripts/mission-finisher.js --mode mainnet",
+    "reality:check": "node scripts/mainnet-readiness.js",
+    "reality:mainnet": "node scripts/mainnet-readiness.js --strict"
   },
   "keywords": [
     "icp",
