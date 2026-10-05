@@ -39,11 +39,19 @@ service : {
         duration_days : nat64;
     }) -> (variant { Ok : LaunchpadToken; Err : text });
 
+    advance_lifecycle : (record {
+        token_id : nat;
+        next_status : text;
+        canister_id : opt text;
+        failure_reason : opt text;
+    }) -> (variant { Ok : LaunchpadToken; Err : text });
+
     get_all_tokens : () -> (vec LaunchpadToken) query;
     get_token : (token_id : nat) -> (opt LaunchpadToken) query;
     get_launchpad_stats : () -> (record {
         total_tokens_launched : nat;
         total_capital_raised : nat;
         active_vesting_contracts : nat;
+        total_deployed_tokens : nat;
     }) query;
 }

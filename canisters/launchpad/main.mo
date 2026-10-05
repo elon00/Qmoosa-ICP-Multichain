@@ -47,7 +47,7 @@ actor QmoosaLaunchpad {
         initial_supply = 500_000_000_00000000;
         model = #GovernanceControlled;
         creator = "Qmoosa Autonomous Engine";
-        canister_id = "staging-caai-canister";
+        canister_id = "NOT_YET_PROVISIONED";
         vesting = ?{
             total_amount = 100_000_000_00000000;
             cliff_days = 90;
@@ -56,11 +56,11 @@ actor QmoosaLaunchpad {
             start_timestamp = Time.now();
         };
         created_at = Time.now();
-        status = "Local Staging Demo";
+        status = "DEMO_STAGING_SPECIFICATION";
     };
     launched_tokens := [genesis_ai_token];
 
-    public func create_token(args : {
+    public shared({ caller }) func create_token(args : {
         name : Text;
         symbol : Text;
         decimals : Nat8;
@@ -75,8 +75,7 @@ actor QmoosaLaunchpad {
         };
 
         token_counter += 1;
-        let caller_text = Principal.toText(Principal.fromActor(QmoosaLaunchpad));
-        let mock_canister_id = "qmoosa-tok-" # Nat.toText(token_counter) # "-cai";
+        let caller_text = Principal.toText(caller);
 
         let vesting_data : ?VestingSchedule = if (args.has_vesting) {
             ?{
@@ -90,6 +89,8 @@ actor QmoosaLaunchpad {
             null
         };
 
+        // Enforce truthful state: initial request is REQUESTED, canister_id is NOT_YET_PROVISIONED.
+        // Synthetic IDs (such as "qmoosa-tok-*-cai") are strictly prohibited.
         let new_token : LaunchpadToken = {
             token_id = token_counter;
             name = args.name;
@@ -98,14 +99,96 @@ actor QmoosaLaunchpad {
             initial_supply = args.initial_supply;
             model = args.model;
             creator = caller_text;
-            canister_id = mock_canister_id;
+            canister_id = "NOT_YET_PROVISIONED";
             vesting = vesting_data;
             created_at = Time.now();
-            status = "Deployed & Verified";
+            status = "REQUESTED";
         };
 
         launched_tokens := Array.append(launched_tokens, [new_token]);
         return #Ok(new_token);
+    };
+
+    public shared({ caller }) func advance_lifecycle(req : {
+        token_id : Nat;
+        next_status : Text;
+        canister_id : ?Text;
+        failure_reason : ?Text;
+    }) : async { #Ok : LaunchpadToken; #Err : Text } {
+        ignore caller;
+        var found = false;
+        var updated_token : ?LaunchpadToken = null;
+        var i = 0;
+        while (i < launched_tokens.size()) {
+            let t = launched_tokens[i];
+            if (t.token_id == req.token_id) {
+                found := true;
+                if (req.next_status != "CREATING" and
+                    req.next_status != "INSTALLING" and
+                    req.next_status != "VERIFYING" and
+                    req.next_status != "DEPLOYED" and
+                    req.next_status != "FAILED") {
+                    return #Err("Invalid lifecycle state: " # req.next_status # ". Must be CREATING, INSTALLING, VERIFYING, DEPLOYED, or FAILED");
+                };
+
+                var cid = t.canister_id;
+                if (req.next_status == "DEPLOYED") {
+                    switch (req.canister_id) {
+                        case null return #Err("Cannot transition to DEPLOYED without a verified canister principal");
+                        case (?c) {
+                            if (Text.size(c) < 5 or c == "NOT_YET_PROVISIONED" or Text.startsWith(c, "qmoosa-tok-")) {
+                                return #Err("Synthetic or placeholder canister ID rejected by truth protocol");
+                            };
+                            cid := c;
+                        };
+                    };
+                } else {
+                    switch (req.canister_id) {
+                        case (?c) { cid := c };
+                        case null {};
+                    };
+                };
+
+                let final_status = if (req.next_status == "FAILED") {
+                    switch (req.failure_reason) {
+                        case (?r) "FAILED: " # r;
+                        case null "FAILED";
+                    }
+                } else {
+                    req.next_status
+                };
+
+                let updated : LaunchpadToken = {
+                    token_id = t.token_id;
+                    name = t.name;
+                    symbol = t.symbol;
+                    decimals = t.decimals;
+                    initial_supply = t.initial_supply;
+                    model = t.model;
+                    creator = t.creator;
+                    canister_id = cid;
+                    vesting = t.vesting;
+                    created_at = t.created_at;
+                    status = final_status;
+                };
+
+                var copy : [LaunchpadToken] = [];
+                var j = 0;
+                while (j < launched_tokens.size()) {
+                    copy := Array.append(copy, [if (j == i) updated else launched_tokens[j]]);
+                    j += 1;
+                };
+                launched_tokens := copy;
+                updated_token := ?updated;
+            };
+            i += 1;
+        };
+
+        if (not found) return #Err("Token not found");
+        switch (updated_token) {
+            case (?t) #Ok(t);
+            case null #Err("Unexpected update failure");
+        }
     };
 
     public query func get_all_tokens() : async [LaunchpadToken] {
@@ -123,11 +206,19 @@ actor QmoosaLaunchpad {
         total_tokens_launched : Nat;
         total_capital_raised : Nat;
         active_vesting_contracts : Nat;
+        total_deployed_tokens : Nat;
     } {
+        var deployed_count : Nat = 0;
+        for (t in launched_tokens.vals()) {
+            if (t.status == "DEPLOYED") {
+                deployed_count += 1;
+            };
+        };
         return {
             total_tokens_launched = token_counter;
             total_capital_raised = token_counter * 250_000;
             active_vesting_contracts = launched_tokens.size();
+            total_deployed_tokens = deployed_count;
         };
     };
 }

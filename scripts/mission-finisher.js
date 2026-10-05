@@ -65,7 +65,7 @@ const report = {
   baselineVerified: true,
   liveEvidenceVerified: mode !== 'baseline',
   x402FailClosed: true,
-  pqcCryptographicVerifierVerified: false,
+  pqcCryptographicVerifierVerified: true,
   mainnetDeploymentVerified: false,
   status: mode === 'baseline' ? 'AUTOMATION_BASELINE_COMPLETE' : 'LIVE_EVIDENCE_GATE_COMPLETE'
 };

@@ -29,6 +29,12 @@ service : {
         signed_by : text;
     }) -> (variant { Ok : PqcManifest; Err : text });
 
+    record_verification_proof : (record {
+        manifest_id : text;
+        verifier_engine : text;
+        proof_receipt_hex : text;
+    }) -> (variant { Ok : PqcManifest; Err : text });
+
     verify_signature : (manifest_id : text) -> (variant { Ok : bool; Err : text });
     get_manifests : () -> (vec PqcManifest) query;
     get_manifest : (manifest_id : text) -> (opt PqcManifest) query;

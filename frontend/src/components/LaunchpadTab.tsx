@@ -28,8 +28,8 @@ export const LaunchpadTab: React.FC = () => {
       decimals: 8,
       supply: '500,000,000',
       model: 'Governance',
-      canisterId: 'rrkah-fqaaa-aaaaa-aaaaq-cai',
-      status: 'Live on ICP'
+      canisterId: 'NOT_YET_PROVISIONED',
+      status: 'DEMO_STAGING_SPECIFICATION'
     },
     {
       id: 2,
@@ -38,8 +38,8 @@ export const LaunchpadTab: React.FC = () => {
       decimals: 8,
       supply: '250,000,000',
       model: 'Mintable',
-      canisterId: 'r7inp-6aaaa-aaaaa-aaabq-cai',
-      status: 'Live on ICP'
+      canisterId: 'NOT_YET_PROVISIONED',
+      status: 'DEMO_STAGING_SPECIFICATION'
     }
   ]);
 
@@ -52,7 +52,7 @@ export const LaunchpadTab: React.FC = () => {
       return;
     }
 
-    const randomCanisterId = `qmoosa-tok-${Math.floor(Math.random() * 9000 + 1000)}-cai`;
+    const initialCanisterId = 'NOT_YET_PROVISIONED';
     const newToken: LaunchpadItem = {
       id: deployedTokens.length + 1,
       name: tokenName,
@@ -60,8 +60,8 @@ export const LaunchpadTab: React.FC = () => {
       decimals: 8,
       supply: parseInt(initialSupply).toLocaleString(),
       model: model,
-      canisterId: randomCanisterId,
-      status: 'Deployed & Active'
+      canisterId: initialCanisterId,
+      status: 'REQUESTED'
     };
 
     setDeployedTokens([newToken, ...deployedTokens]);
@@ -71,12 +71,13 @@ export const LaunchpadTab: React.FC = () => {
       token: tokenName,
       symbol: symbol.toUpperCase(),
       standard: ['ICRC-1', 'ICRC-2', 'ICRC-3'],
-      ledgerCanister: randomCanisterId,
+      ledgerCanister: initialCanisterId,
+      lifecycleState: 'REQUESTED',
       decimals: 8,
       initialSupply: initialSupply,
       supplyPolicy: model,
       vesting: hasVesting ? { cliffDays, durationDays, pool: '20% Team/Advisors' } : null,
-      deployedAt: new Date().toISOString(),
+      requestedAt: new Date().toISOString(),
       governanceController: 'QMOOSA_DAO_SNS'
     };
     setManifest(JSON.stringify(manifestObj, null, 2));
@@ -242,7 +243,18 @@ export const LaunchpadTab: React.FC = () => {
                   </span>
                 </div>
                 <div className="text-[11px] font-mono text-slate-400 mt-1">Supply: {t.supply} • {t.model}</div>
-                <div className="text-[10px] font-mono text-cyan-400 mt-2 truncate">Canister: {t.canisterId}</div>
+                <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-900 text-[10px] font-mono">
+                  <span className="text-cyan-400 truncate max-w-[180px]">ID: {t.canisterId}</span>
+                  <span className={`px-2 py-0.5 rounded text-[9px] font-bold ${
+                    t.status === 'DEPLOYED' 
+                      ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' 
+                      : t.status === 'REQUESTED' 
+                      ? 'bg-amber-950 text-amber-300 border border-amber-800'
+                      : 'bg-slate-800 text-slate-300'
+                  }`}>
+                    {t.status}
+                  </span>
+                </div>
               </div>
             ))}
           </div>

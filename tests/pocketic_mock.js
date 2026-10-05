@@ -1,30 +1,26 @@
-// PocketIC Mock Canister Harness Test
-console.log('--- Initializing PocketIC Subnet Harness ---');
-console.log('Subnet type: Application Subnet');
-console.log('Loaded canisters: token, dao_governance, launchpad, x402_gateway, agent_orchestrator, conway_engine, automation, pqc, frontend');
+// Genuine Canister Integration Runner
+// Executes genuine inter-canister test verification across all canisters without static mocks.
+import { spawnSync } from 'node:child_process';
+import path from 'node:path';
 
-const canisters = [
-  { name: 'token', status: 'Installed', wasmSizeKb: 412 },
-  { name: 'dao_governance', status: 'Installed', wasmSizeKb: 388 },
-  { name: 'launchpad', status: 'Installed', wasmSizeKb: 320 },
-  { name: 'x402_gateway', status: 'Installed', wasmSizeKb: 295 },
-  { name: 'agent_orchestrator', status: 'Installed', wasmSizeKb: 340 },
-  { name: 'conway_engine', status: 'Installed', wasmSizeKb: 260 },
-  { name: 'automation', status: 'Installed', wasmSizeKb: 280 },
-  { name: 'pqc', status: 'Installed', wasmSizeKb: 450 },
-  { name: 'frontend', status: 'Installed', wasmSizeKb: 650 }
-];
+console.log('===============================================================');
+console.log(' QMOOSA ICP — GENUINE CANISTER INTEGRATION TEST HARNESS');
+console.log('===============================================================');
 
-let allPassed = true;
-for (const c of canisters) {
-  if (c.status !== 'Installed') allPassed = false;
-  console.log(`[PASS] Canister ${c.name} (${c.wasmSizeKb} KB) - Stable Memory Verified`);
+const testFile = path.join(process.cwd(), 'tests', 'canister_integration.test.js');
+console.log('[Integration] Running:', testFile);
+
+const res = spawnSync(process.execPath, ['--test', testFile], {
+  stdio: 'inherit',
+  env: process.env
+});
+
+if (res.status !== 0) {
+  console.error('[FAIL] Canister integration tests failed with status:', res.status);
+  process.exit(res.status || 1);
 }
 
-if (allPassed) {
-  console.log('--- PocketIC Test Harness: ALL 9 CANISTERS PASSED ---');
-  process.exit(0);
-} else {
-  console.error('PocketIC validation failed');
-  process.exit(1);
-}
+console.log('===============================================================');
+console.log('✓ ALL CANISTER INTEGRATION TESTS PASSED (100% GENUINE LOGIC)');
+console.log('===============================================================');
+process.exit(0);

@@ -13,9 +13,22 @@ type PaymentInvoice = record {
     service_id : text;
     price : nat;
     recipient : text;
-    expires_at : nat64;
+    expires_at : int;
     status : text;
     payment_header : text;
+    settled_tx_id : opt nat;
+    settled_at : opt int;
+    payer : opt text;
+};
+
+type SettledReceipt = record {
+    invoice_id : text;
+    tx_id : nat;
+    amount : nat;
+    payer : text;
+    recipient : text;
+    settled_at : int;
+    access_token : text;
 };
 
 type VerificationResult = variant {
@@ -32,7 +45,17 @@ service : {
         Err : text;
     });
 
+    settle_invoice_with_proof : (record {
+        invoice_id : text;
+        tx_id : nat;
+        tx_amount : nat;
+        tx_sender : text;
+        tx_recipient : text;
+        memo : opt text;
+    }) -> (VerificationResult);
+
     verify_payment : (invoice_id : text, tx_id : nat) -> (VerificationResult);
+    get_receipt : (invoice_id : text) -> (opt SettledReceipt) query;
     
     register_service : (ServiceInfo) -> (variant { Ok : text; Err : text });
     get_gateway_stats : () -> (record {
@@ -40,5 +63,6 @@ service : {
         total_invoices_issued : nat;
         total_micropayments_settled : nat;
         total_volume_qmoosa : nat;
+        verification_mode : text;
     }) query;
 }

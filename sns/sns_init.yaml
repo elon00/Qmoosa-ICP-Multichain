@@ -1,0 +1,78 @@
+# Qmoosa SNS Initialization Configuration
+# Internet Computer Service Nervous System (SNS) Specification
+name: "Qmoosa Autonomous Protocol"
+description: >
+  Autonomous cross-chain Web3 and AI orchestration protocol on the Internet Computer.
+  Governs tokenomics, autonomous agents, cross-chain adapters, x402 payment policies,
+  and no-code launchpad infrastructure.
+logo: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiIGZpbGw9IiMwNmI2ZDQiLz48L3N2Zz4="
+url: "https://github.com/elon00/Qmoosa-ICP-Multichain"
+
+NnsProposal:
+  title: "NNS Proposal to Launch Qmoosa SNS DAO"
+  summary: >
+    Proposal to initialize the Qmoosa Autonomous Protocol Service Nervous System (SNS).
+    Hands over controllership of the 9 core dapp canisters to the decentralized community
+    and initializes the QMOOSA governance token.
+
+fallback_controller_principal_ids: []
+
+dapp_canisters:
+  - "token"
+  - "dao_governance"
+  - "launchpad"
+  - "x402_gateway"
+  - "agent_orchestrator"
+  - "conway_engine"
+  - "automation"
+  - "pqc"
+  - "frontend"
+
+Token:
+  name: "Qmoosa ICP"
+  symbol: "QMOOSA"
+  transaction_fee: 10_000 # 0.0001 QMOOSA in e8s
+  decimals: 8
+  initial_mints:
+    # 25% Ecosystem & Development Treasury
+    - amount_e8s: 250_000_000_00000000
+      recipient: "sns-treasury"
+    # 15% Neuron Staking & Protocol Rewards
+    - amount_e8s: 150_000_000_00000000
+      recipient: "sns-staking-pool"
+    # 10% Initial Protocol Liquidity Pool
+    - amount_e8s: 100_000_000_00000000
+      recipient: "sns-liquidity-pool"
+
+Proposals:
+  rejection_fee_e8s: 100_000_000 # 1 QMOOSA
+  initial_voting_period_seconds: 345_600 # 4 days
+  maximum_wait_for_quiet_deadline_extension_seconds: 86_400 # 1 day
+
+Neurons:
+  # 10% Core Contributors Allocation (2-year vesting, 6-month cliff)
+  - principal: "2vxsx-fae"
+    stake_e8s: 100_000_000_00000000
+    memo: 0
+    dissolve_delay_seconds: 15_552_000 # 6 months cliff
+    vesting_period_seconds: 63_072_000 # 2 years linear
+
+Voting:
+  minimum_dissolve_delay_seconds: 2_592_000 # 30 days minimum to vote
+  MaximumVotingPowerBonuses:
+    DissolveDelay:
+      duration_seconds: 252_288_000 # 8 years maximum
+      bonus_multiplier: 2.0
+    Aging:
+      duration_seconds: 126_144_000 # 4 years maximum
+      bonus_multiplier: 1.25
+
+DecentralizationSale:
+  min_participants: 25
+  min_direct_participation_icp_e8s: 50_000_000_000 # 500 ICP
+  max_direct_participation_icp_e8s: 500_000_000_000 # 5,000 ICP
+  min_participant_icp_e8s: 100_000_000 # 1 ICP
+  max_participant_icp_e8s: 10_000_000_000 # 100 ICP
+  neuron_basket:
+    count: 3
+    dissolve_delay_interval_seconds: 7_776_000 # 3 months between baskets
