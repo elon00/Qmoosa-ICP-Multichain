@@ -1,6 +1,6 @@
 {
   "project": "Qmoosa ICP Multichain",
-  "executedAt": "2026-10-05T05:09:41.179Z",
+  "executedAt": "2026-10-05T05:14:56.663Z",
   "results": [
     {
       "step": "Dependencies & Environment Verification",
@@ -12,19 +12,19 @@
       "step": "Layer 1: Canister Actor Integration & Unit Tests (21 Tests)",
       "status": "PASS",
       "detail": "21/21 tests passed (Token, DAO, Launchpad, x402, PQC, Conway)",
-      "duration": "1.72"
+      "duration": "1.99"
     },
     {
       "step": "Layer 2: NIST FIPS 204 (ML-DSA-65) Post-Quantum Cryptography",
       "status": "PASS",
       "detail": "ML-DSA-65 Verified (Public Key: 1952B, Sig: 3309B)",
-      "duration": "0.28"
+      "duration": "0.58"
     },
     {
       "step": "Layer 3: x402 Micropayments Ledger Settlement & Replay Protection",
       "status": "PASS",
       "detail": "Fail-closed, recipient match, underpayment & replay attack checks passed",
-      "duration": "0.17"
+      "duration": "0.27"
     },
     {
       "step": "Layer 4: SNS DAO Governance & Tokenomics Specification",
@@ -42,13 +42,13 @@
       "step": "Production Web3 Frontend Build (TypeScript + Vite)",
       "status": "PASS",
       "detail": "Frontend optimized for ICP asset canister upload",
-      "duration": "16.51"
+      "duration": "15.60"
     },
     {
       "step": "Layer 6: ICP Mainnet Reality Gate & Preflight Audit",
       "status": "PASS",
       "detail": "DFX Preflight Verified (Awaiting Deployer & Cycles)",
-      "duration": "0.26"
+      "duration": "0.23"
     }
   ],
   "summary": {

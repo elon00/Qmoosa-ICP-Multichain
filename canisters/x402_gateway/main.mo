@@ -1,6 +1,7 @@
 import Principal "mo:base/Principal";
 import Array "mo:base/Array";
 import Nat "mo:base/Nat";
+import Int "mo:base/Int";
 import Time "mo:base/Time";
 import HashMap "mo:base/HashMap";
 import Text "mo:base/Text";
@@ -160,7 +161,7 @@ actor QmoosaX402Gateway {
     };
 
     // Mint access token bound to invoice, tx_id and timestamp
-    let token = "x402-token-" # req.invoice_id # "-tx" # tx_key # "-" # Nat.toText(Time.now());
+    let token = "x402-token-" # req.invoice_id # "-tx" # tx_key # "-" # Int.toText(Time.now());
     let receipt : SettledReceipt = {
       invoice_id = req.invoice_id;
       tx_id = req.tx_id;
