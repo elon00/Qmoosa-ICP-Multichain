@@ -1,0 +1,39 @@
+name: Qmoosa Mainnet Readiness
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  strict-readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install frontend dependencies
+        run: npm --prefix frontend ci
+      - name: Setup dfx
+        uses: dfinity/setup-dfx@main
+        with:
+          dfx-version: "0.24.0"
+      - name: Unit tests
+        run: npm test
+      - name: Frontend production build
+        run: npm run build
+      - name: Compile all Motoko canisters
+        shell: bash
+        run: |
+          dfx identity new ci --storage-mode plaintext --force >/dev/null 2>&1 || true
+          dfx identity use ci >/dev/null 2>&1 || true
+          dfx start --background --clean
+          trap 'dfx stop || true' EXIT
+          dfx canister create --all
+          dfx build
+      - name: Strict reality-based mainnet gate
+        run: node scripts/mainnet-readiness.js --strict
