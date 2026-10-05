@@ -136,7 +136,7 @@ actor QmoosaLaunchpad {
                     switch (req.canister_id) {
                         case null return #Err("Cannot transition to DEPLOYED without a verified canister principal");
                         case (?c) {
-                            if (Text.size(c) < 5 or c == "NOT_YET_PROVISIONED" or Text.startsWith(c, "qmoosa-tok-")) {
+                            if (Text.size(c) < 5 or c == "NOT_YET_PROVISIONED" or Text.startsWith(c, #text "qmoosa-tok-")) {
                                 return #Err("Synthetic or placeholder canister ID rejected by truth protocol");
                             };
                             cid := c;
