@@ -6,6 +6,9 @@ on:
   schedule:
     - cron: '0 0 * * 0' # Weekly scan
 
+permissions:
+  contents: read
+
 jobs:
   quantum-security-scan:
     name: Post-Quantum & Secrets Audit
@@ -19,6 +22,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install audit dependencies
+        run: npm ci
 
       - name: Verify NIST FIPS 204 Lattice Parameters
         run: node scripts/pqc-manifest-signer.js
