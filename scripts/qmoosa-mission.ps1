@@ -1,45 +1,34 @@
 Write-Host "=================================================================" -ForegroundColor Cyan
-Write-Host "       QMOOSA ICP -- AUTONOMOUS ONE-CLICK MASTER PIPELINE        " -ForegroundColor Cyan
+Write-Host " QMOOSA ICP -- REALITY-BASED ONE-CLICK BASELINE MISSION" -ForegroundColor Cyan
 Write-Host "=================================================================" -ForegroundColor Cyan
 
-Write-Host "[1/8] Validating Node, DFX, and Agent Skills environment..." -ForegroundColor Yellow
-node -v
-Write-Host "Node.js runtime validated." -ForegroundColor Green
+$ErrorActionPreference = "Stop"
 
-Write-Host "[2/8] Running Unit Test Suite..." -ForegroundColor Yellow
+Write-Host "[1/7] Runtime" -ForegroundColor Yellow
+node -v
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "[2/7] Unit tests" -ForegroundColor Yellow
 npm test
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "[3/8] Running PocketIC Multi-Canister Harness Verification..." -ForegroundColor Yellow
-npm run test:pocketic
-if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-Write-Host "[4/8] Building High-Performance Web4 Frontend..." -ForegroundColor Yellow
+Write-Host "[3/7] Frontend production build" -ForegroundColor Yellow
 npm run build
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "[5/8] Validating Candid Interfaces and Canister Boundaries..." -ForegroundColor Yellow
-Get-ChildItem -Path "canisters" -Filter "*.did" -Recurse | ForEach-Object {
-    Write-Host "  -> Candid spec verified: $($_.FullName)" -ForegroundColor DarkGray
-}
-
-Write-Host "[6/8] Auditing NIST FIPS 204 Post-Quantum Manifests..." -ForegroundColor Yellow
+Write-Host "[4/7] PQC truth gate" -ForegroundColor Yellow
 node scripts/pqc-manifest-signer.js
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "[7/8] Simulating x402 Bazaar Machine Micropayment Flow..." -ForegroundColor Yellow
+Write-Host "[5/7] x402 fail-closed truth gate" -ForegroundColor Yellow
 node scripts/simulate-x402.js
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "[8/8] Canister Deployment Readiness Check..." -ForegroundColor Yellow
-Write-Host "  -> ICRC Token Canister: READY" -ForegroundColor Green
-Write-Host "  -> SNS DAO Governance Canister: READY" -ForegroundColor Green
-Write-Host "  -> Token Launchpad Canister: READY" -ForegroundColor Green
-Write-Host "  -> x402 Micropayment Gateway: READY" -ForegroundColor Green
-Write-Host "  -> Multi-Model Agent Orchestrator: READY" -ForegroundColor Green
-Write-Host "  -> Conway Automaton Engine: READY" -ForegroundColor Green
-Write-Host "  -> Native Canister Timers: READY" -ForegroundColor Green
-Write-Host "  -> Post-Quantum Security Hub: READY" -ForegroundColor Green
-Write-Host "  -> Frontend Assets Canister: READY" -ForegroundColor Green
+Write-Host "[6/7] Reality-based readiness report" -ForegroundColor Yellow
+node scripts/mainnet-readiness.js
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "=================================================================" -ForegroundColor Cyan
-Write-Host "  QMOOSA ICP -- ALL CHECKS PASSED. READY FOR CANISTER DEPLOYMENT! " -ForegroundColor Green
+Write-Host "[7/7] Result" -ForegroundColor Yellow
+Write-Host "Baseline validation completed." -ForegroundColor Green
+Write-Host "IMPORTANT: mainnet readiness is only GREEN when npm run reality:mainnet exits 0." -ForegroundColor Yellow
 Write-Host "=================================================================" -ForegroundColor Cyan
