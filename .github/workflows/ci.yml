@@ -39,3 +39,5 @@ jobs:
         run: node scripts/simulate-x402.js
       - name: PQC manifest checks
         run: node scripts/pqc-manifest-signer.js
+      - name: Reality-based readiness report (non-strict)
+        run: node scripts/mainnet-readiness.js
