@@ -1,0 +1,281 @@
+{
+  "engine": "REA_Reverse_Engineer_Anything",
+  "status": "STRUCTURE_RECONSTRUCTED",
+  "analyzed_files": 91,
+  "manifest": {
+    "AGENTS.md": {
+      "bytes": 2574
+    },
+    "dfx.json": {
+      "bytes": 1317
+    },
+    "master.ps1": {
+      "bytes": 365
+    },
+    "master.sh": {
+      "bytes": 107
+    },
+    "package-lock.json": {
+      "bytes": 2382
+    },
+    "package.json": {
+      "bytes": 1664
+    },
+    "README.md": {
+      "bytes": 10903
+    },
+    "skills-lock.json": {
+      "bytes": 501
+    },
+    "agents\\qmoosa_agents.ts": {
+      "bytes": 6020
+    },
+    "deployments\\evidence.example.json": {
+      "bytes": 520
+    },
+    "deployments\\master-runner-report.json": {
+      "bytes": 2114
+    },
+    "deployments\\pqc-genesis-manifest.json": {
+      "bytes": 11202
+    },
+    "docs\\ARCHITECTURE.md": {
+      "bytes": 6985
+    },
+    "docs\\CONWAY_AUTOMATON.md": {
+      "bytes": 1387
+    },
+    "docs\\DEPLOYMENT_GUIDE.md": {
+      "bytes": 1794
+    },
+    "docs\\OISY_AND_TESTICP_TESTING.md": {
+      "bytes": 4394
+    },
+    "docs\\OISY_WALLET_INTEGRATION.md": {
+      "bytes": 1470
+    },
+    "docs\\PQC_SECURITY.md": {
+      "bytes": 1705
+    },
+    "docs\\TOKENOMICS_AND_DAO.md": {
+      "bytes": 2913
+    },
+    "docs\\X402_BAZAAR.md": {
+      "bytes": 2637
+    },
+    "frontend\\index.html": {
+      "bytes": 1575
+    },
+    "frontend\\package-lock.json": {
+      "bytes": 64347
+    },
+    "frontend\\package.json": {
+      "bytes": 518
+    },
+    "frontend\\tsconfig.json": {
+      "bytes": 530
+    },
+    "frontend\\vite.config.ts": {
+      "bytes": 254
+    },
+    "scripts\\deploy-local.sh": {
+      "bytes": 215
+    },
+    "scripts\\deploy-mainnet.ps1": {
+      "bytes": 2481
+    },
+    "scripts\\deploy-mainnet.sh": {
+      "bytes": 3111
+    },
+    "scripts\\generate-test-principal.js": {
+      "bytes": 2164
+    },
+    "scripts\\mainnet-preflight.js": {
+      "bytes": 3250
+    },
+    "scripts\\mainnet-readiness.js": {
+      "bytes": 3309
+    },
+    "scripts\\master-runner.js": {
+      "bytes": 9373
+    },
+    "scripts\\mission-finisher.js": {
+      "bytes": 3093
+    },
+    "scripts\\pqc-manifest-signer.js": {
+      "bytes": 5002
+    },
+    "scripts\\qmoosa-mission.ps1": {
+      "bytes": 1499
+    },
+    "scripts\\qmoosa-mission.sh": {
+      "bytes": 833
+    },
+    "scripts\\rea_inspector.py": {
+      "bytes": 1485
+    },
+    "scripts\\rsi_engine.py": {
+      "bytes": 2039
+    },
+    "scripts\\simulate-x402.js": {
+      "bytes": 3287
+    },
+    "sns\\canister-handoff-plan.md": {
+      "bytes": 2126
+    },
+    "sns\\sns_init.yaml": {
+      "bytes": 2798
+    },
+    "sns\\testflight-checklist.md": {
+      "bytes": 1559
+    },
+    "sns\\tokenomics.md": {
+      "bytes": 1968
+    },
+    "tests\\canister_integration.test.js": {
+      "bytes": 15854
+    },
+    "tests\\conway.test.js": {
+      "bytes": 1019
+    },
+    "tests\\dao.test.js": {
+      "bytes": 1107
+    },
+    "tests\\pocketic_mock.js": {
+      "bytes": 1119
+    },
+    "tests\\pqc.test.js": {
+      "bytes": 2048
+    },
+    "tests\\token.test.js": {
+      "bytes": 1248
+    },
+    "tests\\x402.test.js": {
+      "bytes": 5920
+    },
+    "wiki\\14-Blockchain-Integrations.md": {
+      "bytes": 1761
+    },
+    "wiki\\AI-Agents.md": {
+      "bytes": 860
+    },
+    "wiki\\FAQ.md": {
+      "bytes": 983
+    },
+    "wiki\\Home.md": {
+      "bytes": 13564
+    },
+    "wiki\\Security.md": {
+      "bytes": 944
+    },
+    ".github\\workflows\\ci.yml": {
+      "bytes": 1408
+    },
+    ".github\\workflows\\mainnet-readiness.yml": {
+      "bytes": 1146
+    },
+    ".github\\workflows\\mission-finisher.yml": {
+      "bytes": 3533
+    },
+    ".github\\workflows\\qmoosa-rsi-rea-sync.yml": {
+      "bytes": 531
+    },
+    ".github\\workflows\\security.yml": {
+      "bytes": 992
+    },
+    "canisters\\agent_orchestrator\\agent.did": {
+      "bytes": 1105
+    },
+    "canisters\\agent_orchestrator\\main.mo": {
+      "bytes": 5426
+    },
+    "canisters\\automation\\automation.did": {
+      "bytes": 954
+    },
+    "canisters\\automation\\main.mo": {
+      "bytes": 5667
+    },
+    "canisters\\conway_engine\\conway.did": {
+      "bytes": 631
+    },
+    "canisters\\conway_engine\\main.mo": {
+      "bytes": 4353
+    },
+    "canisters\\dao_governance\\dao.did": {
+      "bytes": 2037
+    },
+    "canisters\\dao_governance\\main.mo": {
+      "bytes": 6701
+    },
+    "canisters\\launchpad\\launchpad.did": {
+      "bytes": 1460
+    },
+    "canisters\\launchpad\\main.mo": {
+      "bytes": 7805
+    },
+    "canisters\\pqc\\main.mo": {
+      "bytes": 4608
+    },
+    "canisters\\pqc\\pqc.did": {
+      "bytes": 1316
+    },
+    "canisters\\token\\main.mo": {
+      "bytes": 5359
+    },
+    "canisters\\token\\token.did": {
+      "bytes": 1898
+    },
+    "canisters\\x402_gateway\\main.mo": {
+      "bytes": 7840
+    },
+    "canisters\\x402_gateway\\x402.did": {
+      "bytes": 1770
+    },
+    "frontend\\src\\App.tsx": {
+      "bytes": 5558
+    },
+    "frontend\\src\\main.tsx": {
+      "bytes": 257
+    },
+    "frontend\\src\\components\\AgentChatTab.tsx": {
+      "bytes": 11425
+    },
+    "frontend\\src\\components\\AutomationTab.tsx": {
+      "bytes": 8285
+    },
+    "frontend\\src\\components\\ChainFusionTab.tsx": {
+      "bytes": 7464
+    },
+    "frontend\\src\\components\\ConwayTab.tsx": {
+      "bytes": 10342
+    },
+    "frontend\\src\\components\\DashboardTab.tsx": {
+      "bytes": 12398
+    },
+    "frontend\\src\\components\\Header.tsx": {
+      "bytes": 6799
+    },
+    "frontend\\src\\components\\LaunchpadTab.tsx": {
+      "bytes": 11717
+    },
+    "frontend\\src\\components\\PQCTab.tsx": {
+      "bytes": 7624
+    },
+    "frontend\\src\\components\\QRModal.tsx": {
+      "bytes": 7018
+    },
+    "frontend\\src\\components\\TokenDAOTab.tsx": {
+      "bytes": 14521
+    },
+    "frontend\\src\\components\\X402BazaarTab.tsx": {
+      "bytes": 10368
+    },
+    "frontend\\src\\styles\\index.css": {
+      "bytes": 1370
+    },
+    "frontend\\src\\types\\index.ts": {
+      "bytes": 1748
+    }
+  },
+  "timestamp": 1794023102
+}
