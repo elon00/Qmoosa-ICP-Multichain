@@ -21,3 +21,6 @@ Thumbs.db
 *.priv.pem
 *private_key*
 *.key
+
+# Lean 4 build artifacts
+lean_verify/.lake/
