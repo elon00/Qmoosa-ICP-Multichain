@@ -73,7 +73,7 @@ jobs:
           rm -f /tmp/mission-identity.pem
       - name: Upload mission evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: qmoosa-icp-multichain-${{ inputs.mode }}-${{ github.run_id }}
           path: |
